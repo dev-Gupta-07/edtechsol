@@ -1,5 +1,6 @@
-import React from "react";
+import React,{useState} from "react";
 import VisibilityTwoToneIcon from "@mui/icons-material/VisibilityTwoTone";
+import { useRouter } from "next/router";
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import {
@@ -18,6 +19,7 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 import Image from "next/image";
+import axios from "axios";
 const IOSSwitch = styled((props: SwitchProps) => (
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
 ))(({ theme }) => ({
@@ -69,6 +71,52 @@ const IOSSwitch = styled((props: SwitchProps) => (
   },
 }));
 const index = () => {
+  const router=useRouter();
+  const [user,setUser]=useState({
+    name:"",
+    username:"",
+    email:"",
+    password:""
+  })
+ console.log(user)
+  const handleSubmit= async(e)=>{
+    e.preventDefault();
+    if(user.name===""|| user.username==="" || user.email===""|| user.password==="")
+    {
+
+      // will show toast
+      return;
+    }
+    if(user.password.length <8)
+    {
+      // toast
+      return;
+    }
+    try {
+         const config = {
+           headers: {
+             "Content-type": "application/json",
+           },
+         };
+         const  {data}  = await axios.post(
+           "/api/signup",
+           user,
+           config
+         );
+         console.log(data.user);
+       
+           localStorage.setItem("userDetails", JSON.stringify(data.user));
+          
+          router.push('/main/profile')
+         
+       } catch (error) {
+          console.log("Error happened");
+       }
+
+
+
+  };
+ 
   return (
     <>
       <Grid container style={{ height: "100vh" }}>
@@ -133,6 +181,7 @@ const index = () => {
               fullWidth
               required
               label="Name"
+              onChange={(e) => setUser({ ...user, name: e.target.value })}
               InputLabelProps={{
                 sx: {
                   color: "white",
@@ -160,6 +209,8 @@ const index = () => {
               fullWidth
               required
               label="Username"
+              onChange={(e) => setUser({ ...user, username: e.target.value })}
+              
               InputLabelProps={{
                 sx: {
                   color: "white",
@@ -187,6 +238,7 @@ const index = () => {
               fullWidth
               required
               label="Email"
+               onChange={(e) => setUser({ ...user, email: e.target.value })}
               InputLabelProps={{
                 sx: {
                   color: "white",
@@ -215,6 +267,8 @@ const index = () => {
               required
               type="Password"
               label="Password"
+              
+               onChange={(e) => setUser({ ...user, password: e.target.value })}
               InputLabelProps={{
                 sx: {
                   color: "white",
@@ -258,12 +312,13 @@ const index = () => {
               variant="contained"
               fullWidth
               size="large"
+              onClick={handleSubmit}
               sx={{
                 backgroundColor: "#6156DB",
                 borderRadius: "10px",
               }}
             >
-              SIGN IN
+              SIGN UP
             </Button>
             <Box display="flex" alignItems="center">
               <Box flexGrow={1} borderBottom={1} borderColor="white" />

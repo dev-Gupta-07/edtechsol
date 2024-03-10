@@ -59,6 +59,22 @@ export default function Layout({children}) {
             <ListItemText primary="Queries" />
           </ListItemButton>
         </ListItem>
+          <ListItem disablePadding onClick={() => router.push("/main/myqueries")}>
+          <ListItemButton >
+            <ListItemIcon>
+              <QueryStatsIcon />
+            </ListItemIcon>
+            <ListItemText primary="MyQueries" />
+          </ListItemButton>
+        </ListItem>
+          <ListItem disablePadding onClick={() => router.push("/main/allqueries")}>
+          <ListItemButton >
+            <ListItemIcon>
+              <QueryStatsIcon />
+            </ListItemIcon>
+            <ListItemText primary="AllQueries" />
+          </ListItemButton>
+        </ListItem>
       
 
         <ListItem disablePadding>
@@ -179,14 +195,16 @@ export default function Layout({children}) {
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
+          backgroundColor:'#1E1E1E',
+          minHeight:'100vh',
+  
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
       >
         <Toolbar />
-        <Box sx={{ padding: "20px" }}>
+        
            {children}
-        </Box>
+       
       </Box>
     </Box>
   );

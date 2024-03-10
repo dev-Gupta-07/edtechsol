@@ -19,6 +19,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please provide a password"],
   },
+  
+},{
+  timestamps:true,
 });
 
 const User = mongoose.models.users || mongoose.model("users", userSchema);
